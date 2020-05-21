@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from sklearn.svm import SVR
 from sklearn import linear_model
 from sklearn.ensemble import RandomForestRegressor
-#import xgboost as xgb
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from multiprocessing import Pool
 import copy as cp
@@ -119,7 +118,6 @@ if __name__ == '__main__':
 
          #Add the experimental or simulation result of the recommended data
          features_observed = np.append(features_observed, [features_unchecked[recommended_index]], axis = 0)
-         print('properties_observed', properties_observed, 'properties_unchecked[recommended_index]', properties_unchecked[recommended_index])
          properties_observed = np.append(properties_observed, [properties_unchecked[recommended_index]], axis = 0)         
 
          #Removed the recommend data
