@@ -28,7 +28,7 @@ def build_model(prediction_model, x_train, y_train):
 def recommend_next(prediction_model, features_observed, features_unchecked, properties_observed):
 
     #Preparation of data    
-    dimension = len(properties_observed[0]) 
+    #dimension = properties_observed.shape[1] 
     sc = StandardScaler()
     sc.fit(features_observed)
     sc_features_observed = sc.transform(features_observed)
@@ -58,11 +58,9 @@ def recommend_next(prediction_model, features_observed, features_unchecked, prop
             writer.writerow(vl_it)
     
     #Calc. Stein Novelty
-    if adaptive:
-        sc_predicted_properties_list = sc_property.transform(predicted_properties_list) 
-        sn_data = [stein_novelty(point, sc_properties_observed, sigma=1) for point in sc_predicted_properties_list]
-    else:
-        sn_data = [stein_novelty(point, sc_properties_observed, sigma) for point in predicted_properties_list]
+    sc_predicted_properties_list = sc_property.transform(predicted_properties_list) 
+    sn_data = [stein_novelty(point, sc_properties_observed, sigma=1) for point in sc_predicted_properties_list]
+    print('sn_data', sn_data)
 
     #Save Stein novelty scores
     out_f = open(sn_score_path, 'w')
@@ -83,35 +81,36 @@ if __name__ == '__main__':
     parser.add_argument("features_unchecked")
     parser.add_argument("properties_observed")
     parser.add_argument("--sigma", type = float, default = 0.1)
-    parser.add_argument("--adaptive", action='store_true')
     parser.add_argument("--prediction_model", default = 'RF')
     parser.add_argument("--iteration_num", type = int, default = 20)
+    parser.add_argument("--dimension", type = int, default = 2)
     args = parser.parse_args()
     features_observed_path = args.features_observed
     features_unchecked_path = args.features_unchecked
     properties_observed_path = args.properties_observed
     sigma = args.sigma
-    adaptive = args.adaptive
     prediction_model = args.prediction_model
-    num_loop = args.iteration_num
+    num_loop = args.iteration_num    
+    dimension = args.dimension
 
     #Parameters 
-    parallel = 2
+    parallel = 1
     predicted_properties_path = 'predicted_properties_of_unchecked_data.csv'
     sn_score_path = 'Stein_novelties_of_unchecked_data.csv'
     recommended_data_path = 'recommend_data_by_BLOX.csv'
-    properties_unchecked_path = 'properties_of_unchecked_data.csv'    
+    properties_unchecked_path = 'properties_of_unchecked_data.csv'     
 
 
     #Load data
     features_observed = np.array(load_data(features_observed_path, read_header = False))
     features_unchecked = np.array(load_data(features_unchecked_path, read_header = False))
-    properties_observed = np.array(load_data(properties_observed_path, read_header = True))
-    properties_unchecked = np.array(load_data(properties_unchecked_path, read_header = True))
+    properties_observed = np.array(load_data(properties_observed_path, read_header = True))[:,:dimension]
+    properties_unchecked = np.array(load_data(properties_unchecked_path, read_header = True))[:,:dimension]
     if len(features_observed) != len(properties_observed):
         print('Error of observed data size')
         sys.exit()
 
+    print('Dimension:', properties_observed.shape[1])
 
     for l in range(num_loop):
          print('Exploration:', l)
@@ -120,6 +119,7 @@ if __name__ == '__main__':
 
          #Add the experimental or simulation result of the recommended data
          features_observed = np.append(features_observed, [features_unchecked[recommended_index]], axis = 0)
+         print('properties_observed', properties_observed, 'properties_unchecked[recommended_index]', properties_unchecked[recommended_index])
          properties_observed = np.append(properties_observed, [properties_unchecked[recommended_index]], axis = 0)         
 
          #Removed the recommend data
