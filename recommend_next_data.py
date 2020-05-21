@@ -40,13 +40,13 @@ if __name__ == '__main__':
     parser.add_argument("features_unchecked")
     parser.add_argument("properties_observed")
     parser.add_argument("--sigma", type = float, default = 0.1)
-    parser.add_argument("--adaptive", action='store_true')
+    parser.add_argument("--dimension", type = int, default = 2)
     args = parser.parse_args()
     features_observed_path = args.features_observed
     features_unchecked_path = args.features_unchecked
     properties_observed_path = args.properties_observed
     sigma = args.sigma
-    adaptive = args.adaptive
+    dimension = args.dimension 
 
     #Parameters 
     parallel = 2
@@ -58,14 +58,14 @@ if __name__ == '__main__':
     #Load data
     features_observed = np.array(load_data(features_observed_path, read_header = False))
     features_unchecked = np.array(load_data(features_unchecked_path, read_header = False))
-    properties_observed = np.array(load_data(properties_observed_path, read_header = True))
+    properties_observed = np.array(load_data(properties_observed_path, read_header = True))[:,:dimension]
     if len(features_observed) != len(properties_observed):
         print('Error of observed data size')
         sys.exit()
 
 
     #Preparation of data    
-    dimension = len(properties_observed[0]) 
+    #dimension = len(properties_observed[0]) 
     sc = StandardScaler()
     sc.fit(features_observed)
     sc_features_observed = sc.transform(features_observed)
@@ -95,11 +95,8 @@ if __name__ == '__main__':
             writer.writerow(vl_it)
     
     #Calc. Stein Novelty
-    if adaptive:
-        sc_predicted_properties_list = sc_property.transform(predicted_properties_list) 
-        sn_data = [stein_novelty(point, sc_properties_observed, sigma=1) for point in sc_predicted_properties_list]
-    else:
-        sn_data = [stein_novelty(point, sc_properties_observed, sigma) for point in predicted_properties_list]
+    sc_predicted_properties_list = sc_property.transform(predicted_properties_list) 
+    sn_data = [stein_novelty(point, sc_properties_observed, sigma=1) for point in sc_predicted_properties_list]
 
     #Save Stein novelty scores
     out_f = open(sn_score_path, 'w')
