@@ -2,7 +2,7 @@
 Python implementation of BoundLess Objective-free eXploration (BLOX) for discovery of out-of-trend materials using Stein novelty. 
 
 ## Requirements
-- Python > 3.
+- Python > 3.6
 
 ## Installation
 Download or clone the github repository, e.g., git clone https://github.com/tsudalab/BLOX
