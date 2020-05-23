@@ -54,6 +54,8 @@ if __name__ == '__main__':
     predicted_properties_path = 'predicted_properties_of_unchecked_data.csv'
     sn_score_path = 'Stein_novelties_of_unchecked_data.csv'
     recommended_data_path = 'recommend_data_by_BLOX.csv'
+    random.seed(0)
+    np.random.seed(0)
 
     #Load data
     features_observed = np.array(load_data(features_observed_path, read_header = False))
