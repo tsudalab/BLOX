@@ -1,5 +1,8 @@
 # BLOX
-Python implementation of BoundLess Objective-free eXploration (BLOX) for discovery of out-of-trend materials using Stein novelty. 
+Python implementation of BoundLess Objective-free eXploration (BLOX)* for discovery of out-of-trend materials using Stein novelty. 
+
+\* K. Terayama, M. Sumita, R. Tamura, D. T. Payne, M. K. Chahal, S. Ishihara, K. Tsuda, "Pushing property limits in materials discovery via boundless objective-free exploration," *Chemical Science*, 2020. [DOI: 10.1039/D0SC00982B]
+
 
 ## Requirements
 - Python > 3.6
@@ -26,5 +29,3 @@ Download or clone the github repository, e.g., git clone https://github.com/tsud
   - `python recommend_next_data.py feature_list_of_observed_data.csv feature_list_of_unchecked_data.csv properties_of_observed_data.csv --dimension 2`
   - The recommend candidate and its predicted properties are saved in "recommend_data_by_Stein_novelty.csv."
 
-## Reference
-K. Terayama, M. Sumita, R. Tamura, D. T. Payne, M. K. Chahal, S. Ishihara, K. Tsuda, "Pushing property limits in materials discovery via boundless objective-free exploration," *Chemical Science*, 2020. [DOI: 10.1039/D0SC00982B]
