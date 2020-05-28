@@ -27,3 +27,4 @@ Download or clone the github repository, e.g., git clone https://github.com/tsud
   - The recommend candidate and its predicted properties are saved in "recommend_data_by_Stein_novelty.csv."
 
 ## Reference
+K. Terayama, M. Sumita, R. Tamura, D. T. Payne, M. K. Chahal, S. Ishihara, K. Tsuda, "Pushing property limits in materials discovery via boundless objective-free exploration," Chemical Science, 2020. [DOI: 10.1039/D0SC00982B]
